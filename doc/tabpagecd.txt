@@ -95,6 +95,9 @@ BUGS						*tabpagecd-bugs*
 ==============================================================================
 CHANGELOG					*tabpagecd-changelog*
 
+0.0.1	2012-09-01T13:25:17+09:00		*tabpagecd-changelog-0.0.1*
+	- Tidy up the document a bit.
+
 0.0.0	2012-04-11T22:41:24+09:00		*tabpagecd-changelog-0.0.0*
 	- Initial version.  Derived from my vimrc.
 
