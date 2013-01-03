@@ -38,7 +38,7 @@ augroup plugin-tabpagecd
   \ | endif
 
   autocmd TabLeave *
-  \   let t:cwd = getcwd()
+  \   let t:cwd = expand('%:p:h')
 augroup END
 
 
