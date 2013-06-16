@@ -29,11 +29,22 @@ endif
 
 
 
+function! s:gitProjectRoot()
+  let cdup = substitute(system("git rev-parse --show-cdup"), '\n', '', "g")
+  if cdup != "" && match(cdup, "fatal:") == -1
+    return cdup
+  endif
+  return ""
+endfunction
+
 augroup plugin-tabpagecd
   autocmd!
 
   autocmd TabEnter *
   \   if exists('t:cwd')
+  \ |   cd `=fnameescape(t:cwd)`
+  \ |   let root = s:gitProjectRoot()
+  \ |   let t:cwd = t:cwd . '/' . root
   \ |   cd `=fnameescape(t:cwd)`
   \ | endif
 
