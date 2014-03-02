@@ -33,23 +33,33 @@ function! s:gitProjectRoot()
   let cdup = substitute(system("git rev-parse --show-cdup"), '\n', '', "g")
   if cdup != "" && match(cdup, "fatal:") == -1
     return cdup
+  else
+    return ""
   endif
-  return ""
 endfunction
 
 augroup plugin-tabpagecd
   autocmd!
 
+  autocmd BufEnter *
+  \   if !exists('t:cwd') && !empty(bufname("%")) && bufname('%') !~ '^\*unite\*'
+  \ |   let t:cwd = expand('%:p:h')
+  \ |   cd `=fnameescape(t:cwd)`
+  \ |   let t:cwd = t:cwd . '/' . s:gitProjectRoot()
+  \ |   cd `=fnameescape(t:cwd)`
+  \ | endif
+
   autocmd TabEnter *
   \   if exists('t:cwd')
   \ |   cd `=fnameescape(t:cwd)`
-  \ |   let root = s:gitProjectRoot()
-  \ |   let t:cwd = t:cwd . '/' . root
+  \ |   let t:cwd = t:cwd . '/' . s:gitProjectRoot()
   \ |   cd `=fnameescape(t:cwd)`
   \ | endif
 
   autocmd TabLeave *
-  \   let t:cwd = expand('%:p:h')
+  \   if !empty(bufname('%'))
+  \ |   let t:cwd = expand('%:p:h')
+  \ | endif
 augroup END
 
 
